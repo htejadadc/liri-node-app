@@ -12,7 +12,12 @@ var clientId = keys.spotifyKeys.client_id;
 var clientSecret = keys.spotifyKeys.client_secret;
 
 var liriCommands = process.argv[2];
-var target = process.argv[3];
+var nodeArg = process.argv;
+var target = "";
+
+for (var k = 3; k < nodeArg.length; k++) {
+	target = target + nodeArg[k] + " ";
+}
  
 var client = new Twitter({
 	consumer_key: cKey,
@@ -35,6 +40,7 @@ function liriRequest(commandEntry, target) {
 				}
 			}
 		});
+
 	} else if (commandEntry === "spotify-this-song") {
 		if (!target) {			
 			spotify.search({type: "track", query: "The Sign", limit: 20}, function(err, data) {
@@ -46,6 +52,7 @@ function liriRequest(commandEntry, target) {
 					"\nPreview Link: " + data.tracks.items[6].preview_url +
 					"\nAlbum Name: " + data.tracks.items[6].album.name);				
 			});
+
 		} else {
 			spotify.search({type: "track", query: target, limit: 5}, function(err, data) {
 				if (err) {
@@ -59,6 +66,7 @@ function liriRequest(commandEntry, target) {
 				}
 			});
 		}
+
 	} else if (commandEntry === "movie-this") {		
 		if (!target) {		
 			target = "Mr.Nobody"
@@ -73,14 +81,15 @@ function liriRequest(commandEntry, target) {
 			if (!error && response.statusCode === 200) {    
 				console.log("\n------------" + "\nTitle of the Movie: " + JSON.parse(body).Title + 
 					"\nYear the Movie came out: " + JSON.parse(body).Year + 
-					"\nIMDB Rating of the Movie: " + JSON.parse(body).Ratings[0].Value + 
-					"\nRotten Tomatoes Rating of the movie: " + JSON.parse(body).Ratings[1].Value + 
+					"\nIMDB Rating of the Movie: " + (JSON.parse(body)).Ratings[0].Value + 
+					"\nRotten Tomatoes Rating of the movie: " + (JSON.parse(body)).Ratings[1].Value + 
 					"\nCountry where the Movie was produced: " + JSON.parse(body).Country + 
 					"\nLanguage of the Movie: " + JSON.parse(body).Language + 
 					"\nPlot of the Movie: " + JSON.parse(body).Plot + 
 					"\nActors in the movie: " + JSON.parse(body).Actors + "\n------------\n");  				 
-			}
+			} 
 		});
+
 	} else if (commandEntry === "do-what-it-says") {	
 
 		fs.readFile("random.txt", "utf8", function(error, data) {  

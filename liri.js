@@ -93,12 +93,12 @@ function liriRequest(commandEntry, target) {
 	} else if (commandEntry === "do-what-it-says") {	
 
 		fs.readFile("random.txt", "utf8", function(error, data) {  
-		  if (error) {
-		    return console.log(error);
-		  }		  
+			if (error) {
+				return console.log(error);
+			}		  
 		    
-		  var dataArray = data.split(",");		
-		  liriRequest(dataArray[0], dataArray[1]);
+			var dataArray = data.split(",");		
+			liriRequest(dataArray[0], dataArray[1]);
 
 		});
 	}
